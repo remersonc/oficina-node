@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <title>NodeJS para Gurreiros Klingon</title>
-  </head>
-  <body>
-    <h1>OFICINA</h1>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+    <canvas id="canvas" width="1280" height="720"></canvas>
+
+    <script src="canvasPainting.js"></script>
+
+    <div id="colorPalette">
+    </div>
+
+    <script src="colorPalette.js"></script>
+
+    <div id="chatContainer">
+        <div id="messageBox"></div>
+        <div id="inputContainer">
+            <input type="text">
+            <button>Enviar</button>
+        </div>
+
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var socket = io();
+        var socket = io();
     </script>
-  </body>
+</body>
+
 </html>
