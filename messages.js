@@ -6,6 +6,11 @@ var message = document.querySelector('.message');
 var lock = document.querySelector('.lock');
 var label = document.querySelector('.lock label');
 var password = document.querySelector('.lock input');
+var newRound = document.querySelector('.newRound');
+
+newRound.addEventListener('animationend', function() {
+  newRound.className = 'newRound';
+})
 
 lock.onsubmit = function(evt) {
   evt.preventDefault();
@@ -16,19 +21,23 @@ lock.onsubmit = function(evt) {
 inputContainer.onsubmit = function(evt) {
   evt.preventDefault();
 
-  socket.emit('send message', message.value);
+  socket.emit('mensagem enviada', message.value);
 
   message.value = ''
 }
 
-socket.on('receive message', function(msg, certa) {
+socket.on('mensagem recebida', function(msg, certa) {
   var msg = msg.replace(/</g, '&lt;');
   msg = msg.replace(/>/g, '&gt;');
 
   var chatMessage;
 
-  if(certa)
-    chatMessage = '<div class="chatMessage">' + msg + '<strong class="red"> &lt;-- resposta certa</strong></div>';
+  if(certa) {
+    messageBox.innerHTML = '';
+    chatMessage = '<div class="chatMessage">' + msg + '<strong class="red"> &lt;-- resposta certa</strong></div><div><strong>--NOVA RODADA--</strong></div>';
+
+    socket.emit('fim da rodada');
+  }
   else
     chatMessage = '<div class="chatMessage">' + msg + '</div>';
 

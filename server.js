@@ -22,16 +22,16 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   console.log('Um usuário se conectou, id: %s', socket.id);
 
-  io.emit('update canvas', canvasData);
+  io.emit('atualizar canvas', canvasData);
 
   socket.on('unlock', (password) => {
     if(password === pass)
       socket.emit('unlocked');
   });
 
-  socket.on('send message', (msg) => {
+  socket.on('mensagem enviada', (msg) => {
     if(msg.toLowerCase() === word) {
-      io.emit('receive message', msg, true);
+      io.emit('mensagem recebida', msg, true);
       word = words[Math.floor(Math.random() * words.length)];
 
       console.log('====');
@@ -39,14 +39,20 @@ io.on('connection', (socket) => {
       console.log('====');
     }
     else {
-      io.emit('receive message', msg);
+      io.emit('mensagem recebida', msg);
     }
   });
 
-  socket.on('update data', (data) => {
+  socket.on('atualizar dados', (data) => {
     canvasData = data;
 
-    io.emit('update canvas', data);
+    io.emit('atualizar canvas', data);
+  });
+
+  socket.on('fim da rodada', () => {
+    canvasData = '';
+    
+    io.emit('nova rodada');
   });
 });
 

@@ -8,7 +8,7 @@ canvas.addEventListener('mousedown', ev_mouseDown, false);
 canvas.addEventListener('mousemove', ev_mouseMove, false);
 canvas.addEventListener('mouseup', ev_mouseUp, false);
 
-socket.on('update canvas', function(data) {
+socket.on('atualizar canvas', function(data) {
     var img = new Image();
 
     img.onload = function() {
@@ -18,11 +18,18 @@ socket.on('update canvas', function(data) {
     img.src = data;
 });
 
-socket.on('unlocked', function() {
-    unlocked = true;
+socket.on('nova rodada', function() {
+    newRound.className = 'newRound active';
 
-    label.textContent = 'UNLOCKED';
-    password.blur();
+    context.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+socket.on('unlocked', function() {
+    if(!unlocked) {
+        unlocked = true;
+        label.textContent = 'UNLOCKED';
+        password.blur();
+    }
 });
 
 function ev_mouseDown(ev) {
@@ -53,7 +60,7 @@ function ev_mouseUp(ev) {
 
     var data = canvas.toDataURL();
 
-    socket.emit('update data', data);
+    socket.emit('atualizar dados', data);
 }
 
 function adjustCoordinates(ev) {

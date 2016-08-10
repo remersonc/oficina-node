@@ -32,7 +32,7 @@ for (palette of palettes) {
         context.strokeStyle = this.style.backgroundColor;
 
         if(context.strokeStyle == '#f5f5f5'){
-            context.lineWidth = 20;
+            context.lineWidth = 40;
         }
         else {
             context.lineWidth = 2;   
