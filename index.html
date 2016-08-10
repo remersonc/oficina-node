@@ -21,7 +21,12 @@
 
             <div class="board">
                 <h2>Quadro</h2>
-                <canvas id="canvas" width="1280" height="720"></canvas>
+                <div class="canvasContainer">
+                    <form action="" class="lock">
+                        <label for="pass">LOCKED</label><input type="password" id="pass">
+                    </form>
+                    <canvas id="canvas" width="1280" height="720"></canvas>
+                </div>
                 <div id="colorPalette"></div>
             </div>
         </main>

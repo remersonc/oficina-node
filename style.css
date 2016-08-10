@@ -121,3 +121,33 @@ h2 {
 .red {
     color: #f55;
 }
+
+.canvasContainer {
+    position: relative;
+}
+
+.lock {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    border: 1px solid #ccc;
+    color: #303030;
+    background-color: #fff;
+}
+
+.lock label {
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.lock input {
+    border: none;
+    width: 0;
+    transition: width .3s ease;
+}
+
+.lock input:focus {
+    margin-left: 0.5rem;
+    width: 5rem;
+    border-bottom: 1px solid #eee;
+}

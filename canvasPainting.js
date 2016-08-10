@@ -2,16 +2,36 @@ canvas = document.getElementById('canvas');
 context = canvas.getContext('2d');
 
 painting = false
+unlocked = false
 
 canvas.addEventListener('mousedown', ev_mouseDown, false);
 canvas.addEventListener('mousemove', ev_mouseMove, false);
 canvas.addEventListener('mouseup', ev_mouseUp, false);
 
+socket.on('update canvas', function(data) {
+    var img = new Image();
+
+    img.onload = function() {
+        context.drawImage(img, 0, 0);
+    }
+
+    img.src = data;
+});
+
+socket.on('unlocked', function() {
+    unlocked = true;
+
+    label.textContent = 'UNLOCKED';
+    password.blur();
+});
+
 function ev_mouseDown(ev) {
-    adjustCoordinates(ev)
-    context.beginPath();
-    context.moveTo(ev._x, ev._y);
-    painting = true;
+    if(unlocked) {
+        adjustCoordinates(ev)
+        context.beginPath();
+        context.moveTo(ev._x, ev._y);
+        painting = true;
+    }
 };
 
 function ev_mouseMove(ev) {
@@ -30,6 +50,10 @@ function ev_mouseUp(ev) {
         ev_mouseMove(ev);
         painting = false;
     }
+
+    var data = canvas.toDataURL();
+
+    socket.emit('update data', data);
 }
 
 function adjustCoordinates(ev) {
