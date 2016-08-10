@@ -1,6 +1,6 @@
 paletteContainer = document.getElementById('colorPalette');
 
-colors = ["#000", "#fab109", "#fa09b1", "#b109fa", "#b1fa09", "#09fab1", "#09b1fa"]
+colors = ["#000", "#fab109", "#fa09b1", "#b109fa", "#b1fa09", "#09fab1", "#09b1fa", "#f5f5f5"]
 first = true
 
 palettes = []
@@ -30,5 +30,12 @@ for (palette of palettes) {
         }
         this.className = 'colorButton selected';
         context.strokeStyle = this.style.backgroundColor;
+
+        if(context.strokeStyle == '#f5f5f5'){
+            context.lineWidth = 20;
+        }
+        else {
+            context.lineWidth = 2;   
+        }
     }, false);
 }

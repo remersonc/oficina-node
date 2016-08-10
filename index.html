@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>NodeJS para Gurreiros Klingon</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <main>
+            <div class="chat">
+                <h2>Respostas</h2>
+                <div id="chatContainer">
+                    <div id="messageBox"></div>
+                    <form id="inputContainer">
+                        <input type="text" class="message" placeholder="Envie uma resposta">
+                        <button>Enviar</button>
+                    </form>
+                </div>
+            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title>NodeJS para Gurreiros Klingon</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
+            <div class="board">
+                <h2>Quadro</h2>
+                <canvas id="canvas" width="1280" height="720"></canvas>
+                <div id="colorPalette"></div>
+            </div>
+        </main>
 
-<body>
-
-    <canvas id="canvas" width="1280" height="720"></canvas>
-
-    <script src="canvasPainting.js"></script>
-
-    <div id="colorPalette">
-    </div>
-
-    <script src="colorPalette.js"></script>
-
-    <div id="chatContainer">
-        <div id="messageBox"></div>
-        <div id="inputContainer">
-            <input type="text">
-            <button>Enviar</button>
-        </div>
-
-    </div>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io();
-    </script>
-</body>
-
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="messages.js"></script>
+        <script src="canvasPainting.js"></script>
+        <script src="colorPalette.js"></script>
+    </body>
 </html>
