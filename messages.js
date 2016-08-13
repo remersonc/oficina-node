@@ -34,12 +34,12 @@ socket.on('mensagem recebida', function(msg, certa, id) {
 
   if(certa) {
     messageBox.innerHTML = '';
-    chatMessage = '<div class="chatMessage">Usuário' + id + ': ' + msg + '<strong class="red"> &lt;-- resposta certa</strong></div><div><strong>--NOVA RODADA--</strong></div>';
+    chatMessage = '<div class="chatMessage">Usuário ' + id + ': ' + msg + '<strong class="red"> &lt;-- resposta certa</strong></div><div><strong>--NOVA RODADA--</strong></div>';
 
     socket.emit('fim da rodada');
   }
   else
-    chatMessage = '<div class="chatMessage">Usuário' + id + ': ' + msg + '</div>';
+    chatMessage = '<div class="chatMessage">Usuário ' + id + ': ' + msg + '</div>';
 
   messageBox.innerHTML += chatMessage;
 

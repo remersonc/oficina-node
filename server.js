@@ -1,12 +1,12 @@
-const express = require('express');
-const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-const {
-    pass
-} = require('./pass.json');
-const words = require('./words.json');
+var p = require('./pass.json');
+var pass = p.pass;
+
+var words = require('./words.json');
 
 var participantes = [];
 var ids = 0;
@@ -44,19 +44,19 @@ io.on('connection', (socket) => {
 
         var re = new RegExp(socket_id);
 
-        var [participante, ...resto] = participantes.filter(p => {
+        var participante = participantes.filter(p => {
             return re.test(p.hash);
         });
 
         if (msg.toLowerCase() === word) {
-            io.emit('mensagem recebida', msg, true, participante.id);
+            io.emit('mensagem recebida', msg, true, participante[0].id);
             word = words[Math.floor(Math.random() * words.length)];
 
             console.log('====');
             console.log('>>>Nova palavra escolhida: ' + word);
             console.log('====');
         } else {
-            io.emit('mensagem recebida', msg, false, participante.id);
+            io.emit('mensagem recebida', msg, false, participante[0].id);
         }
     });
 
