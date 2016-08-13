@@ -3,8 +3,13 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-const { pass } = require('./pass.json');
+const {
+    pass
+} = require('./pass.json');
 const words = require('./words.json');
+
+var participantes = [];
+var ids = 0;
 
 var word = words[Math.floor(Math.random() * words.length)];
 var canvasData;
@@ -16,46 +21,58 @@ console.log('====');
 app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
-  res.sendFile(`${__dirname}/index.html`);
+    res.sendFile(`${__dirname}/index.html`);
 });
 
 io.on('connection', (socket) => {
-  console.log('Um usuário se conectou, id: %s', socket.id);
 
-  io.emit('atualizar canvas', canvasData);
+    participantes.push({
+        'id': ids++,
+        'hash': socket.id
+    });
+    console.log('Um usuário se conectou, id: %s', socket.id);
 
-  socket.on('unlock', (password) => {
-    if(password === pass)
-      socket.emit('unlocked');
-  });
+    io.emit('atualizar canvas', canvasData);
 
-  socket.on('mensagem enviada', (msg) => {
-    if(msg.toLowerCase() === word) {
-      io.emit('mensagem recebida', msg, true);
-      word = words[Math.floor(Math.random() * words.length)];
+    socket.on('unlock', (password) => {
+        if (password === pass)
+            socket.emit('unlocked');
+    });
 
-      console.log('====');
-      console.log('>>>Nova palavra escolhida: ' + word);
-      console.log('====');
-    }
-    else {
-      io.emit('mensagem recebida', msg);
-    }
-  });
+    socket.on('mensagem enviada', (msg, socket_id) => {
 
-  socket.on('atualizar dados', (data) => {
-    canvasData = data;
+        var re = new RegExp(socket_id);
 
-    io.emit('atualizar canvas', data);
-  });
+        var [participante] = participantes.filter(p => {
+            return re.test(p.hash);
+        });
 
-  socket.on('fim da rodada', () => {
-    canvasData = '';
-    
-    io.emit('nova rodada');
-  });
+        if (msg.toLowerCase() === word) {
+            io.emit('mensagem recebida', msg, true, participante.id);
+            word = words[Math.floor(Math.random() * words.length)];
+
+            console.log('====');
+            console.log('>>>Nova palavra escolhida: ' + word);
+            console.log('====');
+        } else {
+            io.emit('mensagem recebida', msg, false, participante.id);
+        }
+    });
+
+
+    socket.on('atualizar dados', (data) => {
+        canvasData = data;
+
+        io.emit('atualizar canvas', data);
+    });
+
+    socket.on('fim da rodada', () => {
+        canvasData = '';
+
+        io.emit('nova rodada');
+    });
 });
 
 http.listen(1966, () => {
-  console.log('Servidor rodando na porta 1966');
+    console.log('Servidor rodando na porta 1966');
 });
