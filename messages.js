@@ -26,7 +26,7 @@ inputContainer.onsubmit = function(evt) {
   message.value = ''
 }
 
-socket.on('mensagem recebida', function(msg, certa) {
+socket.on('mensagem recebida', function(msg, certa, id) {
   var msg = msg.replace(/</g, '&lt;');
   msg = msg.replace(/>/g, '&gt;');
 
@@ -34,12 +34,12 @@ socket.on('mensagem recebida', function(msg, certa) {
 
   if(certa) {
     messageBox.innerHTML = '';
-    chatMessage = '<div class="chatMessage">' + msg + '<strong class="red"> &lt;-- resposta certa</strong></div><div><strong>--NOVA RODADA--</strong></div>';
+    chatMessage = '<div class="chatMessage">Usuário' + id + ': ' + msg + '<strong class="red"> &lt;-- resposta certa</strong></div><div><strong>--NOVA RODADA--</strong></div>';
 
     socket.emit('fim da rodada');
   }
   else
-    chatMessage = '<div class="chatMessage">' + msg + '</div>';
+    chatMessage = '<div class="chatMessage">Usuário' + id + ': ' + msg + '</div>';
 
   messageBox.innerHTML += chatMessage;
 

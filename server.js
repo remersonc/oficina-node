@@ -30,6 +30,7 @@ io.on('connection', (socket) => {
         'id': ids++,
         'hash': socket.id
     });
+
     console.log('Um usuário se conectou, id: %s', socket.id);
 
     io.emit('atualizar canvas', canvasData);
@@ -43,7 +44,7 @@ io.on('connection', (socket) => {
 
         var re = new RegExp(socket_id);
 
-        var [participante] = participantes.filter(p => {
+        var [participante, ...resto] = participantes.filter(p => {
             return re.test(p.hash);
         });
 
